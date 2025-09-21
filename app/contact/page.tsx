@@ -64,7 +64,7 @@ export default function ContactPage() {
       icon: FiMail,
       title: "Email Us",
       content: "shreekrishnaproperties46@gmail.com",
-      subtitle: "We'll respond within 24 hours",
+      subtitle: "We&apos;ll respond within 24 hours",
       href: "mailto:shreekrishnaproperties46@gmail.com",
       color: "from-blue-500 to-cyan-500"
     },
@@ -133,7 +133,7 @@ export default function ContactPage() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.4 }}
           >
-            Ready to find your dream property? Contact our expert team today and let's make your real estate dreams come true.
+            Ready to find your dream property? Contact our expert team today and let&apos;s make your real estate dreams come true.
           </motion.p>
         </motion.div>
 
@@ -149,8 +149,7 @@ export default function ContactPage() {
             <motion.a
               key={index}
               href={info.href}
-              className="group block"
-            
+              className="group block" 
               whileHover={{ y: -5, scale: 1.02 }}
               transition={{ type: "spring", stiffness: 300 }}
             >
@@ -186,14 +185,11 @@ export default function ContactPage() {
                 Send us a Message
               </h2>
               <p className="text-gray-600 text-center mb-8">
-                Fill out the form below and we'll get back to you shortly
+                Fill out the form below and we&apos;ll get back to you shortly
               </p>
 
               <form onSubmit={handleSubmit} className="space-y-6">
-                <motion.div
-                  className="relative"
-                  whileFocus={{ scale: 1.02 }}
-                >
+                <motion.div className="relative">
                   <FiUser className="absolute left-4 top-4 w-5 h-5 text-gray-400" />
                   <input
                     type="text"
@@ -206,10 +202,7 @@ export default function ContactPage() {
                   />
                 </motion.div>
 
-                <motion.div
-                  className="relative"
-                  whileFocus={{ scale: 1.02 }}
-                >
+                <motion.div className="relative">
                   <FiMail className="absolute left-4 top-4 w-5 h-5 text-gray-400" />
                   <input
                     type="email"
@@ -222,10 +215,7 @@ export default function ContactPage() {
                   />
                 </motion.div>
 
-                <motion.div
-                  className="relative"
-                  whileFocus={{ scale: 1.02 }}
-                >
+                <motion.div className="relative">
                   <FiPhone className="absolute left-4 top-4 w-5 h-5 text-gray-400" />
                   <input
                     type="tel"
@@ -237,10 +227,7 @@ export default function ContactPage() {
                   />
                 </motion.div>
 
-                <motion.div
-                  className="relative"
-                  whileFocus={{ scale: 1.02 }}
-                >
+                <motion.div className="relative">
                   <FiMessageCircle className="absolute left-4 top-4 w-5 h-5 text-gray-400" />
                   <textarea
                     name="message"
@@ -295,7 +282,7 @@ export default function ContactPage() {
                   )}
                   <span className="font-medium">
                     {status === "success"
-                      ? "Message sent successfully! We'll get back to you soon."
+                      ? "Message sent successfully! We&apos;ll get back to you soon."
                       : "Failed to send message. Please try again later."
                     }
                   </span>

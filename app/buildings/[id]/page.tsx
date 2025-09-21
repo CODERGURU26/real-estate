@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
+import Image from "next/image";
 
 interface Building {
   _id?: string;
@@ -11,32 +12,32 @@ interface Building {
   image?: string;
 }
 
+// ✅ Move static buildings outside component (stable reference)
+const staticBuildings: Building[] = [
+  {
+    id: "1",
+    name: "Unique Shanti Developers",
+    image: "/unique-estate.jpg",
+    description: "comfort, elegance, and community living",
+  },
+  {
+    id: "2",
+    name: "Skyline Towers",
+    image: "/skyline.jpg",
+    description: "Luxurious apartments with skyline views.",
+  },
+  {
+    id: "3",
+    name: "JP Infra",
+    image: "/jpinfra.webp",
+    description: "modern living with unmatched lifestyle amenities",
+  },
+];
+
 export default function BuildingDetail() {
   const { id } = useParams();
   const [building, setBuilding] = useState<Building | null>(null);
   const [loading, setLoading] = useState(true);
-
-  // Static fallback data
-  const staticBuildings: Building[] = [
-    {
-      id: "1",
-      name: "Unique Shanti Developers",
-      image: "/unique-estate.jpg",
-      description: "comfort, elegance, and community living",
-    },
-    {
-      id: "2",
-      name: "Skyline Towers",
-      image: "/skyline.jpg",
-      description: "Luxurious apartments with skyline views.",
-    },
-    {
-      id: "3",
-      name: "JP Infra",
-      image: "/jpinfra.webp",
-      description: "modern living with unmatched lifestyle amenities",
-    },
-  ];
 
   useEffect(() => {
     if (!id) return;
@@ -66,9 +67,11 @@ export default function BuildingDetail() {
   return (
     <section className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow">
       {building.image && (
-        <img
+        <Image
           src={building.image}
           alt={building.name}
+          width={800}
+          height={400}
           className="w-full h-64 object-cover rounded mb-6"
         />
       )}

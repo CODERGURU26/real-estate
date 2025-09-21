@@ -1,5 +1,28 @@
-import { NextAuthOptions } from "next-auth";
+import { NextAuthOptions, User as NextAuthUser } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import { DefaultSession } from "next-auth";
+// Extend NextAuth types
+declare module "next-auth" {
+  interface Session {
+    user: {
+      role?: string;
+    } & DefaultSession["user"];
+  }
+
+  interface User {
+    role?: string;
+  }
+}
+
+declare module "next-auth/jwt" {
+  interface JWT {
+    role?: string;
+  }
+}
+
+interface AuthUser extends NextAuthUser {
+  role: string;
+}
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -10,7 +33,6 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        // Hardcoded admin credentials
         const adminEmail = "shreekrishnaproperties46@gmail.com";
         const adminPassword = "Krishna@123";
 
@@ -23,7 +45,7 @@ export const authOptions: NextAuthOptions = {
             name: "Admin",
             email: adminEmail,
             role: "admin",
-          };
+          } as AuthUser;
         }
 
         return null; // invalid credentials
@@ -36,13 +58,13 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.role = (user as any).role;
+        token.role = (user as AuthUser).role;
       }
       return token;
     },
     async session({ session, token }) {
-      if (token) {
-        (session.user as any).role = token.role;
+      if (token && session.user) {
+        session.user.role = token.role;
       }
       return session;
     },

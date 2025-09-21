@@ -41,8 +41,12 @@ export default function RegisterPage() {
 
       // 3️⃣ Redirect to home page
       router.push("/home");
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("An unknown error occurred");
+      }
     }
   };
 
@@ -55,9 +59,7 @@ export default function RegisterPage() {
         Create an Account
       </h2>
 
-      {error && (
-        <p className="text-red-500 text-sm text-center">{error}</p>
-      )}
+      {error && <p className="text-red-500 text-sm text-center">{error}</p>}
 
       <input
         type="text"

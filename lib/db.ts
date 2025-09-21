@@ -12,13 +12,15 @@ interface MongooseCache {
   promise: Promise<typeof mongoose> | null;
 }
 
-// @ts-ignore
-let cached: MongooseCache = global.mongoose;
-
-if (!cached) {
-  // @ts-ignore
-  cached = global.mongoose = { conn: null, promise: null };
+// Extend NodeJS.Global to include mongoose cache
+declare global {
+  // eslint-disable-next-line no-var
+  var mongoose: MongooseCache;
 }
+
+// Initialize cache
+let cached: MongooseCache = global.mongoose || { conn: null, promise: null };
+global.mongoose = cached;
 
 export async function connectToDatabase() {
   if (cached.conn) return cached.conn;
@@ -26,9 +28,6 @@ export async function connectToDatabase() {
   if (!cached.promise) {
     cached.promise = mongoose.connect(MONGODB_URI, {
       dbName: "realestate",
-      // Optional: to avoid warnings
-      // useNewUrlParser: true,
-      // useUnifiedTopology: true,
     }).then((mongoose) => mongoose);
   }
 

@@ -30,10 +30,8 @@ export default function Navbar() {
   const onAdminPage = pathname?.startsWith("/admin");
   const isLoggedIn = status === "authenticated";
 
-  // Hide navbar on login/register pages
-  if (pathname === "/login" || pathname === "/register") {
-    return null;
-  }
+  // Avoid returning null directly, and instead conditionally render
+  
 
   // Handle scroll effect
   useEffect(() => {
@@ -49,13 +47,21 @@ export default function Navbar() {
     setMenuOpen(false);
   }, [pathname]);
 
+  if (pathname === "/login" || pathname === "/register") {
+    return <></>; // Empty fragment to prevent hooks errors
+  }
   // Navigation items
-  const navItems = [
-    { href: "/home", label: "Home", icon: FiHome },
-    { href: "/contact", label: "Contact Us", icon: FiPhone },
-    { href: "/aboutus", label: "About Us", icon: FiInfo },
-  ];
+  const baseNavItems = [
+  { href: "/home", label: "Home", icon: FiHome },
+  { href: "/contact", label: "Contact Us", icon: FiPhone },
+  { href: "/aboutus", label: "About Us", icon: FiInfo },
+];
 
+const navItems =
+  pathname === "/"
+    ? baseNavItems.filter((item) => item.href !== "/home") // hide Home on landing
+    : baseNavItems;
+  
   return (
     <>
       <motion.nav

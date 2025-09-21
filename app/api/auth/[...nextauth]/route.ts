@@ -1,9 +1,11 @@
 import NextAuth, { AuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import { JWT } from "next-auth/jwt"; // ✅ for jwt typing
+import { Session, User } from "next-auth"; // ✅ for session typing
 import bcrypt from "bcryptjs";
 
 import { connectToDatabase } from "@/lib/db";
-import User from "@/lib/models/User";
+import UserModel from "@/lib/models/User";
 
 export const authOptions: AuthOptions = {
   providers: [
@@ -13,7 +15,7 @@ export const authOptions: AuthOptions = {
         email: { label: "Email", type: "text" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials): Promise<any> {
+      async authorize(credentials): Promise<User | null> {
         if (!credentials?.email || !credentials.password) return null;
 
         // ✅ Hardcoded Admin
@@ -29,12 +31,12 @@ export const authOptions: AuthOptions = {
             name: "Admin",
             email: adminEmail,
             role: "admin",
-          };
+          } as User;
         }
 
         // ✅ Normal User from DB
         await connectToDatabase();
-        const user = await User.findOne({ email: credentials.email }).lean();
+        const user = await UserModel.findOne({ email: credentials.email }).lean();
         if (!user) return null;
 
         const isPasswordValid = await bcrypt.compare(
@@ -48,7 +50,7 @@ export const authOptions: AuthOptions = {
           name: user.name,
           email: user.email,
           role: user.role,
-        };
+        } as User;
       },
     }),
   ],
@@ -56,20 +58,31 @@ export const authOptions: AuthOptions = {
     strategy: "jwt",
   },
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({
+      token,
+      user,
+    }: {
+      token: JWT & { role?: string };
+      user?: User & { role?: string };
+    }) {
       if (user) {
-        token.role = (user as any).role;
+        token.role = user.role;
       }
       return token;
     },
-    async session({ session, token }) {
-      if (token) {
-        session.user.role = token.role as string;
+    async session({
+      session,
+      token,
+    }: {
+      session: Session & { user: { role?: string } };
+      token: JWT & { role?: string };
+    }) {
+      if (token?.role) {
+        session.user.role = token.role;
       }
       return session;
     },
     async redirect({ url, baseUrl }) {
-      // ✅ Redirect admin to /admin after login
       if (url.startsWith("/")) return `${baseUrl}${url}`;
       if (new URL(url).origin === baseUrl) return url;
       return baseUrl;
