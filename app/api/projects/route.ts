@@ -1,15 +1,16 @@
 import { connectToDatabase } from "@/lib/db";
 import Project from "@/lib/models/Project";
 import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
 // GET a single project by ID
 export async function GET(
-  req: Request,
-  { params }: { params: { id: string } } // <-- params must be an object with id
+  req: NextRequest,
+  context: { params: { id: string } }
 ) {
   try {
     await connectToDatabase();
-    const project = await Project.findById(params.id).lean();
+    const project = await Project.findById(context.params.id).lean();
 
     if (!project) {
       return NextResponse.json({ error: "Project not found" }, { status: 404 });
@@ -22,14 +23,14 @@ export async function GET(
   }
 }
 
-// DELETE a project by ID (optional)
+// DELETE a project by ID
 export async function DELETE(
-  req: Request,
-  { params }: { params: { id: string } }
+  req: NextRequest,
+  context: { params: { id: string } }
 ) {
   try {
     await connectToDatabase();
-    const deleted = await Project.findByIdAndDelete(params.id);
+    const deleted = await Project.findByIdAndDelete(context.params.id);
 
     if (!deleted) {
       return NextResponse.json({ error: "Project not found" }, { status: 404 });
