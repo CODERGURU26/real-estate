@@ -3,13 +3,13 @@ import Link from "next/link";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
 import { 
-  FiHome, 
+   
   FiMapPin, 
   FiStar, 
   FiUsers, 
   FiTrendingUp, 
   FiShield,
-  FiPlay,
+  
   FiChevronRight,
   FiCheckCircle
 } from "react-icons/fi";
