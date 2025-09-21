@@ -5,8 +5,12 @@ import Footer from "./components/Footer";
 import AuthProvider from "./providers/AuthProvider";
 
 export const metadata: Metadata = {
-  title: "Krishna Properties",
+  
+  title: "Shree Krishna Properties",
   description: "Real Estate Website",
+  icons:{
+    icon:'/logo.png'
+  }
 };
 
 export default function RootLayout({
