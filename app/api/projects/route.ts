@@ -1,44 +1,32 @@
 import { connectToDatabase } from "@/lib/db";
 import Project from "@/lib/models/Project";
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-// GET a single project by ID
-export async function GET(
-  req: NextRequest,
-  context: { params: { id: string } }
-) {
+// GET all projects
+export async function GET(req: NextRequest) {
   try {
     await connectToDatabase();
-    const project = await Project.findById(context.params.id).lean();
+    const projects = await Project.find({}).lean();
 
-    if (!project) {
-      return NextResponse.json({ error: "Project not found" }, { status: 404 });
-    }
-
-    return NextResponse.json(project, { status: 200 });
+    return NextResponse.json(projects, { status: 200 });
   } catch (error) {
-    console.error("GET project error:", error);
+    console.error("GET projects error:", error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
 
-// DELETE a project by ID
-export async function DELETE(
-  req: NextRequest,
-  context: { params: { id: string } }
-) {
+// CREATE a new project
+export async function POST(req: NextRequest) {
   try {
     await connectToDatabase();
-    const deleted = await Project.findByIdAndDelete(context.params.id);
+    const body = await req.json();
 
-    if (!deleted) {
-      return NextResponse.json({ error: "Project not found" }, { status: 404 });
-    }
+    const project = new Project(body);
+    await project.save();
 
-    return NextResponse.json({ message: "Project deleted" }, { status: 200 });
+    return NextResponse.json(project, { status: 201 });
   } catch (error) {
-    console.error("DELETE project error:", error);
+    console.error("POST project error:", error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
