@@ -3,9 +3,9 @@ import Project from "@/lib/models/Project";
 import { NextRequest, NextResponse } from "next/server";
 
 interface RouteParams {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 // GET project by ID
@@ -15,7 +15,8 @@ export async function GET(
 ) {
   try {
     await connectToDatabase();
-    const project = await Project.findById(params.id).lean();
+    const { id } = await params;
+    const project = await Project.findById(id).lean();
 
     if (!project) {
       return NextResponse.json({ error: "Project not found" }, { status: 404 });
@@ -35,8 +36,9 @@ export async function PUT(
 ) {
   try {
     await connectToDatabase();
+    const { id } = await params;
     const body = await req.json();
-    const updated = await Project.findByIdAndUpdate(params.id, body, { new: true });
+    const updated = await Project.findByIdAndUpdate(id, body, { new: true });
 
     if (!updated) {
       return NextResponse.json({ error: "Project not found" }, { status: 404 });
@@ -56,7 +58,8 @@ export async function DELETE(
 ) {
   try {
     await connectToDatabase();
-    const deleted = await Project.findByIdAndDelete(params.id);
+    const { id } = await params;
+    const deleted = await Project.findByIdAndDelete(id);
 
     if (!deleted) {
       return NextResponse.json({ error: "Project not found" }, { status: 404 });

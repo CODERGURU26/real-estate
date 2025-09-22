@@ -40,7 +40,14 @@ export async function POST(req: NextRequest) {
     console.error("POST project error:", error);
     
     // Handle validation errors specifically
-    if (error && typeof error === 'object' && 'name' in error && error.name === 'ValidationError' && 'message' in error) {
+    if (
+      error && 
+      typeof error === 'object' && 
+      'name' in error && 
+      'message' in error &&
+      error.name === 'ValidationError' &&
+      typeof error.message === 'string'
+    ) {
       return NextResponse.json(
         { error: "Validation error", details: error.message },
         { status: 400 }
