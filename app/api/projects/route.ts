@@ -8,10 +8,13 @@ export async function GET(req: NextRequest) {
     await connectToDatabase();
     const projects = await Project.find({}).lean();
 
-    return NextResponse.json(projects, { status: 200 });
-  } catch (error) {
+    return NextResponse.json(projects);
+  } catch (error: unknown) {
     console.error("GET projects error:", error);
-    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to fetch projects" }, 
+      { status: 500 }
+    );
   }
 }
 
@@ -21,12 +24,32 @@ export async function POST(req: NextRequest) {
     await connectToDatabase();
     const body = await req.json();
 
-    const project = new Project(body);
-    await project.save();
+    // Optional: Add basic validation
+    if (!body.title || !body.description) {
+      return NextResponse.json(
+        { error: "Title and description are required" },
+        { status: 400 }
+      );
+    }
 
-    return NextResponse.json(project, { status: 201 });
-  } catch (error) {
+    const project = new Project(body);
+    const savedProject = await project.save();
+
+    return NextResponse.json(savedProject, { status: 201 });
+  } catch (error: unknown) {
     console.error("POST project error:", error);
-    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    
+    // Handle validation errors specifically
+    if (error && typeof error === 'object' && 'name' in error && error.name === 'ValidationError' && 'message' in error) {
+      return NextResponse.json(
+        { error: "Validation error", details: error.message },
+        { status: 400 }
+      );
+    }
+
+    return NextResponse.json(
+      { error: "Failed to create project" }, 
+      { status: 500 }
+    );
   }
 }

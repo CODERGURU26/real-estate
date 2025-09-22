@@ -2,10 +2,16 @@ import { connectToDatabase } from "@/lib/db";
 import Project from "@/lib/models/Project";
 import { NextRequest, NextResponse } from "next/server";
 
+interface RouteParams {
+  params: {
+    id: string;
+  };
+}
+
 // GET project by ID
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: RouteParams
 ) {
   try {
     await connectToDatabase();
@@ -15,7 +21,7 @@ export async function GET(
       return NextResponse.json({ error: "Project not found" }, { status: 404 });
     }
 
-    return NextResponse.json(project, { status: 200 });
+    return NextResponse.json(project);
   } catch (error) {
     console.error("GET project error:", error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
@@ -25,7 +31,7 @@ export async function GET(
 // UPDATE project by ID
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: RouteParams
 ) {
   try {
     await connectToDatabase();
@@ -36,7 +42,7 @@ export async function PUT(
       return NextResponse.json({ error: "Project not found" }, { status: 404 });
     }
 
-    return NextResponse.json(updated, { status: 200 });
+    return NextResponse.json(updated);
   } catch (error) {
     console.error("PUT project error:", error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
@@ -46,7 +52,7 @@ export async function PUT(
 // DELETE project by ID
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: RouteParams
 ) {
   try {
     await connectToDatabase();
@@ -56,7 +62,7 @@ export async function DELETE(
       return NextResponse.json({ error: "Project not found" }, { status: 404 });
     }
 
-    return NextResponse.json({ message: "Project deleted" }, { status: 200 });
+    return NextResponse.json({ message: "Project deleted" });
   } catch (error) {
     console.error("DELETE project error:", error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
