@@ -46,7 +46,7 @@ export default function Users() {
             <tr className="bg-gray-200 text-gray-700">
               <th className="p-3 text-left whitespace-nowrap">Name</th>
               <th className="p-3 text-left whitespace-nowrap">Email</th>
-              <th className="p-3 text-left whitespace-nowrap">Phone</th>
+            
               <th className="p-3 text-left whitespace-nowrap">Role</th>
             </tr>
           </thead>
@@ -65,7 +65,6 @@ export default function Users() {
                 >
                   <td className="p-3">{user.name}</td>
                   <td className="p-3">{user.email}</td>
-                  <td className="p-3">{user.phone || "—"}</td>
                   <td className="p-3 capitalize">{user.role || "user"}</td>
                 </tr>
               ))

@@ -1,23 +1,21 @@
 import mongoose from "mongoose";
 
-const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost:27017/realestate";
+const MONGODB_URI = process.env.MONGODB_URI as string;
 
 if (!MONGODB_URI) {
   throw new Error("❌ Please define MONGODB_URI in .env.local");
 }
 
-// Define a type for global caching
 interface MongooseCache {
   conn: typeof mongoose | null;
   promise: Promise<typeof mongoose> | null;
 }
 
-// Extend NodeJS.Global to include mongoose cache
 declare global {
-  var mongoose: MongooseCache;
+  // allow global cache in dev hot-reload
+  var mongoose: MongooseCache | undefined;
 }
 
-// Initialize cache
 const cached: MongooseCache = global.mongoose || { conn: null, promise: null };
 global.mongoose = cached;
 
