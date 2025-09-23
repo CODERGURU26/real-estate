@@ -59,7 +59,7 @@ export default function AdminPage() {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-100">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-800 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-rose-800 mx-auto mb-4"></div>
           <p className="text-gray-600 text-lg">Checking access...</p>
         </div>
       </div>
@@ -74,20 +74,20 @@ export default function AdminPage() {
     <div className="flex min-h-screen bg-gray-100 w-full">
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 h-screen w-64 bg-gradient-to-b from-blue-800 to-blue-900 text-white flex flex-col transform transition-transform duration-300 ease-in-out z-40 shadow-2xl
+        className={`fixed top-0 left-0 h-screen w-64 bg-gradient-to-b from-rose-700 to-rose-600 text-white flex flex-col transform transition-transform duration-300 ease-in-out z-40 shadow-2xl
         ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} 
         md:translate-x-0 md:static md:h-screen md:shadow-none`}
       >
         {/* Header */}
         <div className="flex items-center justify-between p-4 lg:p-6 border-b border-blue-700/50">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+            <div className="w-8 h-8 bg-rose-600 rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-sm">A</span>
             </div>
             <h1 className="text-xl lg:text-2xl font-bold">Admin Panel</h1>
           </div>
           <button
-            className="md:hidden text-white hover:bg-blue-700 p-2 rounded-lg transition-colors"
+            className="md:hidden text-white hover:bg-rose-700 p-2 rounded-lg transition-colors"
             onClick={() => setSidebarOpen(false)}
             aria-label="Close sidebar"
           >
@@ -98,7 +98,7 @@ export default function AdminPage() {
         {/* User Info */}
         <div className="p-4 lg:p-6 border-b border-blue-700/50">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
+            <div className="w-10 h-10 bg-rose-600 rounded-full flex items-center justify-center">
               <span className="text-white font-semibold text-sm">
                 {session.user?.name?.charAt(0).toUpperCase() || 'U'}
               </span>
@@ -124,8 +124,8 @@ export default function AdminPage() {
                 }}
                 className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
                   activeTab === tab
-                    ? "bg-blue-600 font-semibold shadow-lg transform scale-105"
-                    : "hover:bg-blue-700/50 hover:translate-x-1"
+                    ? "bg-rose-600 font-semibold shadow-lg transform scale-105"
+                    : "hover:bg-rose-700/50 hover:translate-x-1"
                 }`}
                 aria-label={`Navigate to ${config.label}`}
               >

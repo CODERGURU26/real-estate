@@ -83,7 +83,7 @@ export default function Home() {
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
       {/* Hero Section */}
       <motion.section 
-        className="relative overflow-hidden bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-800 text-white"
+        className="relative overflow-hidden bg-gradient-to-r from-rose-600 via-rose-700 to-rose-800 text-white"
         style={{ y: heroY, opacity: heroOpacity }}
       >
         {/* Background Pattern */}
