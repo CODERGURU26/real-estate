@@ -1,6 +1,8 @@
 import mongoose, { Schema, models, model } from "mongoose";
 
-// Schema
+// -----------------------------
+// Mongoose Schema
+// -----------------------------
 const ProjectSchema = new Schema(
   {
     name: { type: String, required: true },
@@ -10,9 +12,11 @@ const ProjectSchema = new Schema(
   { timestamps: true }
 );
 
-// MongoDB interface (raw DB document)
+// -----------------------------
+// MongoDB document interface
+// -----------------------------
 export interface IProject extends mongoose.Document {
-  _id: mongoose.Types.ObjectId;  // ✅ add this
+  _id: mongoose.Types.ObjectId;  // ObjectId from MongoDB
   name: string;
   description: string;
   image?: string;
@@ -20,9 +24,17 @@ export interface IProject extends mongoose.Document {
   updatedAt: Date;
 }
 
-// DTO for frontend (what API returns)
+// -----------------------------
+// Lean type for .find().lean()
+// -----------------------------
+export type LeanProject = Omit<IProject, "save" | "isNew">; 
+// includes _id: ObjectId and all fields, but plain JS object
+
+// -----------------------------
+// DTO type for frontend
+// -----------------------------
 export interface IProjectDTO {
-  _id: string;                   // ✅ frontend always gets string
+  _id: string;          // frontend always gets string
   name: string;
   description: string;
   image?: string;
@@ -30,5 +42,8 @@ export interface IProjectDTO {
   updatedAt: string;
 }
 
+// -----------------------------
+// Export Mongoose model
+// -----------------------------
 const Project = models.Project || model<IProject>("Project", ProjectSchema);
 export default Project;
