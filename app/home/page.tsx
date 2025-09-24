@@ -364,7 +364,7 @@ export default function Home() {
           >
             <FiHome className="w-16 h-16 text-gray-400 mx-auto mb-4" />
             <h3 className="text-xl font-semibold text-gray-600 mb-2">No Properties Found</h3>
-            <p className="text-gray-500">We're working on adding new properties. Check back soon!</p>
+            <p className="text-gray-500">We&apos;re working on adding new properties. Check back soon!</p>
           </motion.div>
         )}
       </section>
