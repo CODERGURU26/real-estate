@@ -89,7 +89,7 @@ const navItems =
                   transition={{ duration: 0.8 }}
                 >
                   <Image
-                    src="/logo.png"
+                    src="/images/logo.png"
                     alt="Krishna Properties Logo"
                     width={45}
                     height={45}
