@@ -31,7 +31,7 @@ const staticBuildings: Building[] = [
     _id: "3", 
     title: "JP Infra",
     image: "/images/jpinfra.webp",
-    description: "Modern living with unmatched lifestyle amenities including swimming pool, gym, children's play area, and 24/7 security. Perfect for contemporary families.",
+    description: "Modern living with unmatched lifestyle amenities including swimming pool, gym, children&apos;s play area, and 24/7 security. Perfect for contemporary families.",
   },
 ];
 
@@ -263,7 +263,7 @@ export default function BuildingDetail() {
                 <ul className="text-gray-600 space-y-1">
                   <li>• Swimming Pool</li>
                   <li>• Gymnasium</li>
-                  <li>• Children's Play Area</li>
+                  <li>• Children&apos;s Play Area</li>
                   <li>• Landscaped Gardens</li>
                 </ul>
               </div>
