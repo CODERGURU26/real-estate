@@ -23,22 +23,39 @@ interface Building {
 export default function Home() {
   const [projects, setProjects] = useState<Building[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   
   const { scrollY } = useScroll();
   const heroY = useTransform(scrollY, [0, 500], [0, 150]);
   const heroOpacity = useTransform(scrollY, [0, 300], [1, 0.7]);
 
   useEffect(() => {
-    fetch("/api/projects")
-      .then((res) => res.json())
-      .then((data) => {
-        setProjects(data);
-        setLoading(false);
-      })
-      .catch((err) => {
+    const fetchProjects = async () => {
+      try {
+        const res = await fetch("/api/projects");
+        const data = await res.json();
+        
+        // Handle the API response structure
+        if (data.success && Array.isArray(data.data)) {
+          setProjects(data.data);
+        } else if (Array.isArray(data)) {
+          // Fallback if API returns array directly
+          setProjects(data);
+        } else {
+          console.error("API returned unexpected format:", data);
+          setProjects([]); // Set empty array as fallback
+          setError("Failed to load projects");
+        }
+      } catch (err) {
         console.error("Error fetching projects:", err);
+        setProjects([]); // Set empty array as fallback
+        setError("Failed to fetch projects");
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+
+    fetchProjects();
   }, []);
 
   // Static buildings with enhanced data
@@ -63,7 +80,8 @@ export default function Home() {
     },
   ];
 
-  const allBuildings = [...projects, ...buildings];
+  // Safe spreading - ensure projects is always an array
+  const allBuildings = [...(Array.isArray(projects) ? projects : []), ...buildings];
 
   // Enhanced truncate function
   const truncate = (text: string, maxWords: number) => {
@@ -204,6 +222,17 @@ export default function Home() {
           </p>
         </motion.div>
 
+        {/* Error Message */}
+        {error && (
+          <motion.div
+            className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-8 text-center"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            {error}
+          </motion.div>
+        )}
+
         {loading ? (
           <div className="flex justify-center items-center py-20">
             <motion.div
@@ -323,6 +352,19 @@ export default function Home() {
               View All Properties
               <FiArrowRight className="ml-2" />
             </Link>
+          </motion.div>
+        )}
+
+        {/* Empty State */}
+        {!loading && allBuildings.length === 0 && (
+          <motion.div
+            className="text-center py-20"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            <FiHome className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+            <h3 className="text-xl font-semibold text-gray-600 mb-2">No Properties Found</h3>
+            <p className="text-gray-500">We're working on adding new properties. Check back soon!</p>
           </motion.div>
         )}
       </section>
