@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, use } from "react";
 import { 
    
   FiMapPin, 
@@ -14,7 +14,15 @@ import {
   FiCheckCircle
 } from "react-icons/fi";
 
+import ContactModal from "./components/ContactModal";
+
 export default function LandingPage() {
+  const[contactModal , setContactModal] = useState(false)
+
+  useEffect(()=>{
+    const timer = setTimeout(()=> setContactModal(true) , 2000)
+    return ()=> clearTimeout(timer)
+  },[])
   const [activeTestimonial, setActiveTestimonial] = useState(0);
   const heroRef = useRef(null);
   const { scrollYProgress } = useScroll({
@@ -28,7 +36,7 @@ export default function LandingPage() {
   const featuredProperties = [
     {
       title: "Oceanfront Villa",
-      img: "/green-valley.jpg",
+      img: "/images/green-valley.jpg",
       desc: "Luxurious oceanfront villa with panoramic views and private beach access.",
       beds: 5,
       baths: 4,
@@ -37,7 +45,7 @@ export default function LandingPage() {
     },
     {
       title: "Urban Penthouse",
-      img: "/address.jpg", 
+      img: "/images/address.jpg", 
       desc: "Modern penthouse in the heart of downtown with city skyline views.",
       beds: 3,
       baths: 3,
@@ -46,7 +54,7 @@ export default function LandingPage() {
     },
     {
       title: "Family Estate",
-      img: "/luxury-heights.jpg",
+      img: "/images/luxury-heights.jpg",
       desc: "Spacious family estate with beautiful gardens and entertainment areas.",
       beds: 6,
       baths: 5,
@@ -113,6 +121,7 @@ export default function LandingPage() {
   return (
     <main className="bg-gray-50 text-gray-900 overflow-hidden">
       {/* Hero Section */}
+      <ContactModal isOpen={contactModal} onClose={()=> setContactModal(false)}/>
       <section
         ref={heroRef}
         className="relative h-screen flex items-center justify-center text-center"

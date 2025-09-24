@@ -1,6 +1,5 @@
-// app/api/projects/[id]/route.ts
 import { connectToDatabase } from "@/lib/db";
-import Project from "@/lib/models/Project"; // Make sure this matches your actual file name
+import Project from "@/lib/models/Project";
 import { NextRequest, NextResponse } from "next/server";
 
 interface RouteParams {
@@ -20,19 +19,13 @@ export async function GET(
     const project = await Project.findById(id).lean();
 
     if (!project) {
-      return NextResponse.json(
-        { success: false, error: "Project not found" }, 
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "Project not found" }, { status: 404 });
     }
 
-    return NextResponse.json({ success: true, data: project });
+    return NextResponse.json(project);
   } catch (error) {
     console.error("GET project error:", error);
-    return NextResponse.json(
-      { success: false, error: "Internal Server Error" }, 
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
 
@@ -45,39 +38,16 @@ export async function PUT(
     await connectToDatabase();
     const { id } = await params;
     const body = await req.json();
-    
-    // Validate required fields
-    if (!body.name || !body.description) {
-      return NextResponse.json(
-        { success: false, error: "Name and description are required" },
-        { status: 400 }
-      );
-    }
-
-    const updated = await Project.findByIdAndUpdate(
-      id, 
-      {
-        name: body.name,
-        description: body.description,
-        image: body.image || ''
-      }, 
-      { new: true, runValidators: true }
-    );
+    const updated = await Project.findByIdAndUpdate(id, body, { new: true });
 
     if (!updated) {
-      return NextResponse.json(
-        { success: false, error: "Project not found" }, 
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "Project not found" }, { status: 404 });
     }
 
-    return NextResponse.json({ success: true, data: updated });
+    return NextResponse.json(updated);
   } catch (error) {
     console.error("PUT project error:", error);
-    return NextResponse.json(
-      { success: false, error: "Internal Server Error" }, 
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
 
@@ -92,21 +62,12 @@ export async function DELETE(
     const deleted = await Project.findByIdAndDelete(id);
 
     if (!deleted) {
-      return NextResponse.json(
-        { success: false, error: "Project not found" }, 
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "Project not found" }, { status: 404 });
     }
 
-    return NextResponse.json({ 
-      success: true, 
-      message: "Project deleted successfully" 
-    });
+    return NextResponse.json({ message: "Project deleted" });
   } catch (error) {
     console.error("DELETE project error:", error);
-    return NextResponse.json(
-      { success: false, error: "Internal Server Error" }, 
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }

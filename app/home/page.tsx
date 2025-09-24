@@ -63,19 +63,19 @@ export default function Home() {
     {
       id: "1",
       name: "Unique Shanti Developers",
-      image: "/unique-estate.jpg",
+      image: "/images/unique-estate.jpg",
       description: "Experience comfort, elegance, and premium community living in our thoughtfully designed residential complex.",
     },
     {
       id: "2", 
       name: "Skyline Towers",
-      image: "/skyline.jpg",
+      image: "/images/skyline.jpg",
       description: "Luxurious high-rise apartments offering breathtaking skyline views and world-class amenities for modern urban living.",
     },
     {
       id: "3",
       name: "JP Infra",
-      image: "/jpinfra.webp", 
+      image: "/images/jpinfra.webp", 
       description: "Contemporary residential spaces designed for modern lifestyles with unmatched amenities and premium finishes.",
     },
   ];

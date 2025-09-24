@@ -34,9 +34,9 @@ export default function ContactPage() {
     e.preventDefault();
     setIsLoading(true);
     
-    const serviceId = "service_qfkb0p9";
-    const templateId = "template_vp84whm";
-    const userId = "73Tnky-QsjEZhEvLw";
+    const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!;
+    const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!;
+    const userId = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!;
 
     const templateParams = {
       user_name: formData.name,
