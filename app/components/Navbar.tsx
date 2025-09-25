@@ -30,9 +30,6 @@ export default function Navbar() {
   const onAdminPage = pathname?.startsWith("/admin");
   const isLoggedIn = status === "authenticated";
 
-  // Avoid returning null directly, and instead conditionally render
-  
-
   // Handle scroll effect
   useEffect(() => {
     const handleScroll = () => {
@@ -50,17 +47,18 @@ export default function Navbar() {
   if (pathname === "/login" || pathname === "/register") {
     return <></>; // Empty fragment to prevent hooks errors
   }
+  
   // Navigation items
   const baseNavItems = [
-  { href: "/home", label: "Home", icon: FiHome },
-  { href: "/contact", label: "Contact Us", icon: FiPhone },
-  { href: "/aboutus", label: "About Us", icon: FiInfo },
-];
+    { href: "/home", label: "Home", icon: FiHome },
+    { href: "/contact", label: "Contact Us", icon: FiPhone },
+    { href: "/aboutus", label: "About Us", icon: FiInfo },
+  ];
 
-const navItems =
-  pathname === "/"
-    ? baseNavItems.filter((item) => item.href !== "/home") // hide Home on landing
-    : baseNavItems;
+  const navItems =
+    pathname === "/"
+      ? baseNavItems.filter((item) => item.href !== "/home") // hide Home on landing
+      : baseNavItems;
   
   return (
     <>
@@ -258,6 +256,7 @@ const navItems =
               className="lg:hidden overflow-hidden border-t border-white/20"
             >
               <div className={`${scrolled ? "bg-white" : "bg-blue-700"} px-4 py-4`}>
+                {/* Navigation Items */}
                 <div className="space-y-1">
                   {navItems.map((item) => (
                     <Link
@@ -278,6 +277,82 @@ const navItems =
                       <span className="font-medium">{item.label}</span>
                     </Link>
                   ))}
+                </div>
+
+                {/* Mobile Auth Section */}
+                <div className="mt-4 pt-4 border-t border-white/20">
+                  {status === "loading" ? (
+                    <div className="flex items-center justify-center py-4">
+                      <div className="w-8 h-8 border-2 border-current border-t-transparent rounded-full animate-spin opacity-50" />
+                    </div>
+                  ) : !isLoggedIn ? (
+                    <div className="space-y-2">
+                      <Link
+                        href="/login"
+                        className={`flex items-center space-x-3 px-4 py-3 rounded-lg border-2 transition-all duration-200 ${
+                          scrolled
+                            ? "border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white"
+                            : "border-white text-white hover:bg-white hover:text-blue-600"
+                        }`}
+                        onClick={() => setMenuOpen(false)}
+                      >
+                        <FiLogIn className="w-5 h-5" />
+                        <span className="font-medium">Login</span>
+                      </Link>
+                      <Link
+                        href="/register"
+                        className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 font-medium ${
+                          scrolled
+                            ? "bg-blue-600 text-white hover:bg-blue-700"
+                            : "bg-white text-blue-600 hover:bg-gray-100"
+                        }`}
+                        onClick={() => setMenuOpen(false)}
+                      >
+                        <FiUser className="w-5 h-5" />
+                        <span>Sign Up</span>
+                      </Link>
+                    </div>
+                  ) : (
+                    <div className="space-y-3">
+                      {/* User Info */}
+                      <div
+                        className={`flex items-center space-x-3 px-4 py-3 rounded-lg ${
+                          scrolled ? "bg-gray-100" : "bg-white/10 backdrop-blur-sm"
+                        }`}
+                      >
+                        <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white font-semibold text-sm">
+                          {user?.name?.charAt(0).toUpperCase() || "U"}
+                        </div>
+                        <span className="font-medium text-sm truncate">
+                          {user?.name ?? user?.email}
+                        </span>
+                      </div>
+
+                      {/* Admin Button */}
+                      {isAdmin && !onAdminPage && (
+                        <Link
+                          href="/admin"
+                          className="flex items-center space-x-3 bg-gradient-to-r from-yellow-400 to-orange-400 text-black px-4 py-3 rounded-lg hover:from-yellow-500 hover:to-orange-500 transition-all duration-200 font-medium shadow-lg"
+                          onClick={() => setMenuOpen(false)}
+                        >
+                          <MdOutlineAdminPanelSettings className="w-5 h-5" />
+                          <span>Admin Panel</span>
+                        </Link>
+                      )}
+
+                      {/* Logout Button */}
+                      <button
+                        onClick={() => {
+                          setMenuOpen(false);
+                          signOut({ callbackUrl: "/" });
+                        }}
+                        className="w-full flex items-center space-x-3 bg-red-500 hover:bg-red-600 text-white px-4 py-3 rounded-lg transition-all duration-200 font-medium shadow-lg"
+                      >
+                        <AiOutlineLogout className="w-5 h-5" />
+                        <span>Logout</span>
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
             </motion.div>

@@ -64,7 +64,7 @@ export default function ContactPage() {
       icon: FiMail,
       title: "Email Us",
       content: "shreekrishnaproperties46@gmail.com",
-      subtitle: "We&apos;ll respond within 24 hours",
+      subtitle: "We will respond within 24 hours",
       href: "mailto:shreekrishnaproperties46@gmail.com",
       color: "from-blue-500 to-cyan-500"
     },
@@ -133,7 +133,7 @@ export default function ContactPage() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.4 }}
           >
-            Ready to find your dream property? Contact our expert team today and let&apos;s make your real estate dreams come true.
+            Ready to find your dream property? Contact our expert team today and lets make your real estate dreams come true.
           </motion.p>
         </motion.div>
 
@@ -185,7 +185,7 @@ export default function ContactPage() {
                 Send us a Message
               </h2>
               <p className="text-gray-600 text-center mb-8">
-                Fill out the form below and we&apos;ll get back to you shortly
+                Fill out the form below and we will get back to you shortly
               </p>
 
               <form onSubmit={handleSubmit} className="space-y-6">
@@ -282,7 +282,7 @@ export default function ContactPage() {
                   )}
                   <span className="font-medium">
                     {status === "success"
-                      ? "Message sent successfully! We&apos;ll get back to you soon."
+                      ? "Message sent successfully! We will get back to you soon."
                       : "Failed to send message. Please try again later."
                     }
                   </span>
@@ -309,7 +309,7 @@ export default function ContactPage() {
                 transition={{ type: "spring", stiffness: 300 }}
               >
                 <img
-                  src="/contactus.svg"
+                  src="/images/contactus.svg"
                   alt="Contact us illustration"
                   className="w-full h-auto"
                 />
