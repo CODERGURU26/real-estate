@@ -248,7 +248,7 @@ export default function HomepageManager() {
           <button
             type="submit"
             className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded transition-colors disabled:bg-blue-300"
-            disabled={loading || !title.trim() || !description.trim()}
+            disabled={loading || !(title?.trim()) || !(description?.trim())}
           >
             {loading ? "Saving..." : editingId ? "Update Project" : "Add Project"}
           </button>

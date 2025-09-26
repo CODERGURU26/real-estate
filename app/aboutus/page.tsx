@@ -63,7 +63,7 @@ export default function AboutPage() {
       >
         <div className="relative w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden">
           <motion.img
-            src="/aboutus.jpg"
+            src="/images/aboutus.jpg"
             alt="About Us"
             className="w-full h-full object-cover"
             initial={{ scale: 0.95 }}
